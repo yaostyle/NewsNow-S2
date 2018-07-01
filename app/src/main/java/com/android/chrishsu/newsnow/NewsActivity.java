@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -26,6 +27,12 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     private static final String GUARDIAN_NEWS_REQUEST_URL = "https://content.guardianapis.com/search?q=debate&from-date=2015-01-01&show-tags=contributor&api-key=test";
     private static final int NEWS_LOADER_ID = 1;
     private TextView emptyStateTextView;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
     // Override onCreateLoader so it initiates the loader when app starts
     @Override
