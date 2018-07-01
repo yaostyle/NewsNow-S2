@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_height"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="9"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/news_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_height"
+            android:layout_weight="1"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/title_text" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:id="@+id/icon_category"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_category"
+                android:tint="@color/colorAccent"/>
+
+            <TextView
+                android:id="@+id/news_section"
+                style="@style/SmallText"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@id/icon_category"
+                android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/news_author"
+                style="@style/SmallText"
+                android:layout_toRightOf="@id/news_section"
+                android:layout_marginLeft="8dp"
+                android:textSize="11sp"
+                android:layout_marginTop="3dp"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/news_pubdate"
+                style="@style/SmallText"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="18dp"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="@dimen/arrow_height"
+        android:layout_gravity="right|center_vertical"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_arrow"
+        android:tint="@color/colorAccent" />
+
+</LinearLayout>
