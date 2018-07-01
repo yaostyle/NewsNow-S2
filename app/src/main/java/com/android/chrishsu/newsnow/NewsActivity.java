@@ -6,8 +6,8 @@ import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,11 +20,11 @@ import java.util.List;
 
 // NewsActivity - Main & entry activity with loader callbacks
 public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<List<News>> {
-
     // Setting vars
     public static final String LOG_TAG = NewsActivity.class.getName();
     private NewsAdapter newsAdapter;
-    private static final String GUARDIAN_NEWS_REQUEST_URL = "https://content.guardianapis.com/search?q=debate&from-date=2015-01-01&show-tags=contributor&api-key=test";
+    private static final String API_KEY = "61214367-5a82-4571-a662-7561b8d0d6dc";
+    private static final String GUARDIAN_NEWS_REQUEST_URL = "https://content.guardianapis.com/search?q=debate&from-date=2015-01-01&show-tags=contributor&api-key=" + API_KEY;
     private static final int NEWS_LOADER_ID = 1;
     private TextView emptyStateTextView;
 
