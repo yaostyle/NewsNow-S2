@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +27,14 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     // Setting vars
     public static final String LOG_TAG = NewsActivity.class.getName();
     private NewsAdapter newsAdapter;
+    private TextView emptyStateTextView;
+    private static final int NEWS_LOADER_ID = 1;
+
+    // Separate API paramters vars
     private static final String API_KEY = "61214367-5a82-4571-a662-7561b8d0d6dc";
     private static final String FROM_DATE_VAL = "2015-01-01";
     private static final String SHOW_TAG_VAL = "contributor";
-    //private static final String GUARDIAN_NEWS_REQUEST_URL = "https://content.guardianapis.com/search?q=debate&order-by=relevance&from-date=2015-01-01&show-tags=contributor&api-key=" + API_KEY;
     private static final String GUARDIAN_NEWS_REQUEST_URL = "https://content.guardianapis.com/search";
-    private static final int NEWS_LOADER_ID = 1;
-    private TextView emptyStateTextView;
 
     // Override onCreateLoader so it initiates the loader when app starts
     @Override
@@ -42,12 +44,17 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
                 getString(R.string.settings_search_keyword_key),
                 getString(R.string.settings_search_keyword_default));
 
+        String orderBy = sharedPrefs.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.setting_order_by_default));
+
+
         Uri baseUri = Uri.parse(GUARDIAN_NEWS_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
         uriBuilder.appendQueryParameter("api-key", API_KEY);
         uriBuilder.appendQueryParameter("q", searchKeyword);
-        uriBuilder.appendQueryParameter("order-by", "relevance");
+        uriBuilder.appendQueryParameter("order-by", orderBy);
         uriBuilder.appendQueryParameter("from-date", FROM_DATE_VAL);
         uriBuilder.appendQueryParameter("show-tags", SHOW_TAG_VAL);
 

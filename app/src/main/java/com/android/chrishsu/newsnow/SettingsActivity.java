@@ -2,6 +2,7 @@ package com.android.chrishsu.newsnow;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -23,12 +24,24 @@ public class SettingsActivity extends AppCompatActivity {
 
             Preference searchKeyword = findPreference(getString(R.string.settings_search_keyword_key));
             bindPreferenceSummaryToValue(searchKeyword);
+
+            Preference orderBy = findPreference(getString(R.string.settings_order_by_key));
+            bindPreferenceSummaryToValue(orderBy);
         }
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object o) {
             String stringValue = o.toString();
-            preference.setSummary(stringValue);
+            if (preference instanceof ListPreference) {
+                ListPreference listPreference = (ListPreference) preference;
+                int prefIndex = listPreference.findIndexOfValue(stringValue);
+                if (prefIndex >= 0) {
+                    CharSequence[] labels = listPreference.getEntries();
+                    preference.setSummary(labels[prefIndex]);
+                }
+            } else {
+                preference.setSummary(stringValue);
+            }
             return true;
         }
 
