@@ -30,8 +30,14 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     private TextView emptyStateTextView;
     private static final int NEWS_LOADER_ID = 1;
 
-    // Separate API paramters vars
-    private static final String API_KEY = "61214367-5a82-4571-a662-7561b8d0d6dc";
+    // API parameters and values var
+    private static final String API_API_KEY = "api-key";
+    private static final String API_QUERY = "q";
+    private static final String API_ORDER_BY = "order-by";
+    private static final String API_FROM_DATE = "from-date";
+    private static final String API_SHOW_TAGS = "show-tags";
+
+    private static final String API_KEY_VAL = "61214367-5a82-4571-a662-7561b8d0d6dc";
     private static final String FROM_DATE_VAL = "2015-01-01";
     private static final String SHOW_TAG_VAL = "contributor";
     private static final String GUARDIAN_NEWS_REQUEST_URL = "https://content.guardianapis.com/search";
@@ -39,24 +45,28 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     // Override onCreateLoader so it initiates the loader when app starts
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
+        // Get default shared preference object
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Get searchKeyword init value
         String searchKeyword = sharedPrefs.getString(
                 getString(R.string.settings_search_keyword_key),
                 getString(R.string.settings_search_keyword_default));
 
+        // Get orderby init value
         String orderBy = sharedPrefs.getString(
                 getString(R.string.settings_order_by_key),
                 getString(R.string.setting_order_by_default));
 
-
+        // Create uriBuilder to append params
         Uri baseUri = Uri.parse(GUARDIAN_NEWS_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
-
-        uriBuilder.appendQueryParameter("api-key", API_KEY);
-        uriBuilder.appendQueryParameter("q", searchKeyword);
-        uriBuilder.appendQueryParameter("order-by", orderBy);
-        uriBuilder.appendQueryParameter("from-date", FROM_DATE_VAL);
-        uriBuilder.appendQueryParameter("show-tags", SHOW_TAG_VAL);
+        // Adding params
+        uriBuilder.appendQueryParameter(API_API_KEY, API_KEY_VAL);
+        uriBuilder.appendQueryParameter(API_QUERY, searchKeyword);
+        uriBuilder.appendQueryParameter(API_ORDER_BY, orderBy);
+        uriBuilder.appendQueryParameter(API_FROM_DATE, FROM_DATE_VAL);
+        uriBuilder.appendQueryParameter(API_SHOW_TAGS, SHOW_TAG_VAL);
 
         // Return a new NewsLoader instance and pass uriBuilder
         return new NewsLoader(this, uriBuilder.toString());
@@ -147,20 +157,26 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         }
     }
 
+    // Override onCreateOptionsMenu to inflate menu layout
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
+    // Override onOptionsItemSelected to send intent acitive to SettingsActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Get the current item id
         int id = item.getItemId();
+
+        // If id matched the name, send an intent
         if (id == R.id.action_settings) {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
             return true;
         }
+        // Return this item
         return super.onOptionsItemSelected(item);
     }
 
