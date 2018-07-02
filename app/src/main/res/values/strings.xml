@@ -4,5 +4,9 @@
     <string name="no_internet_connection">No internet connection!</string>
     <string name="settings_menu_item">Settings</string>
     <string name="settings_title">Settings</string>
-    
+
+    <string name="settings_search_keyword_label">Search Keyword</string>
+    <string name="settings_search_keyword_key">search_keyword</string>
+    <string name="settings_search_keyword_default">debate</string>
+
 </resources>

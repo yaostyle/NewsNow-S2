@@ -3,12 +3,15 @@ package com.android.chrishsu.newsnow;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -24,21 +27,32 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     public static final String LOG_TAG = NewsActivity.class.getName();
     private NewsAdapter newsAdapter;
     private static final String API_KEY = "61214367-5a82-4571-a662-7561b8d0d6dc";
-    private static final String GUARDIAN_NEWS_REQUEST_URL = "https://content.guardianapis.com/search?q=debate&from-date=2015-01-01&show-tags=contributor&api-key=" + API_KEY;
+    private static final String FROM_DATE_VAL = "2015-01-01";
+    private static final String SHOW_TAG_VAL = "contributor";
+    //private static final String GUARDIAN_NEWS_REQUEST_URL = "https://content.guardianapis.com/search?q=debate&order-by=relevance&from-date=2015-01-01&show-tags=contributor&api-key=" + API_KEY;
+    private static final String GUARDIAN_NEWS_REQUEST_URL = "https://content.guardianapis.com/search";
     private static final int NEWS_LOADER_ID = 1;
     private TextView emptyStateTextView;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
     // Override onCreateLoader so it initiates the loader when app starts
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
-        // Return a new NewsLoader instance and pass API url
-        return new NewsLoader(this, GUARDIAN_NEWS_REQUEST_URL);
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String searchKeyword = sharedPrefs.getString(
+                getString(R.string.settings_search_keyword_key),
+                getString(R.string.settings_search_keyword_default));
+
+        Uri baseUri = Uri.parse(GUARDIAN_NEWS_REQUEST_URL);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        uriBuilder.appendQueryParameter("api-key", API_KEY);
+        uriBuilder.appendQueryParameter("q", searchKeyword);
+        uriBuilder.appendQueryParameter("order-by", "relevance");
+        uriBuilder.appendQueryParameter("from-date", FROM_DATE_VAL);
+        uriBuilder.appendQueryParameter("show-tags", SHOW_TAG_VAL);
+
+        // Return a new NewsLoader instance and pass uriBuilder
+        return new NewsLoader(this, uriBuilder.toString());
     }
 
     // Override onLoadFinished method for loader
@@ -126,5 +140,21 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

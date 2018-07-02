@@ -190,7 +190,7 @@ public class QueryUtils {
                 String date = formatDate(currentNews.getString(KEY_PUB_DATE));
                 String weburl = currentNews.getString(KEY_WEB_URL);
 
-                // Declar an empty string for author in case there's no value
+                // Declare an empty string for author in case there's no value
                 String author = "";
                 // Check if array object "references" has any value
                 if (currentNews.getJSONArray(KEY_TAGS).length() > 0) {
